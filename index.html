@@ -1,461 +1,662 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 Grade 12 Advanced Physics - The Mathematics of Motion Exam</title>
+    <title>🚀 Grade 12 Advanced Physics - The Mathematics of Motion (6.5)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Cairo', sans-serif; }
+        body.en-mode { font-family: 'Inter', sans-serif; }
         .correct { background-color: #dcfce7 !important; border-color: #16a34a !important; }
         .incorrect { background-color: #fee2e2 !important; border-color: #dc2626 !important; }
         .formula { font-family: 'Times New Roman', serif; font-style: italic; direction: ltr; display: inline-block; }
         .timer-warning { color: #dc2626 !important; animation: pulse 1s infinite; }
         @keyframes pulse { 50% { opacity: 0.7; } }
         @media print { .no-print { display: none !important; } }
-        .success-badge { 
-            display: inline-block; 
-            padding: 4px 12px; 
-            border-radius: 20px; 
-            font-weight: bold;
-            font-size: 0.875rem;
-        }
+        .success-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.875rem; }
         .grade-excellent { background: #dcfce7; color: #166534; }
         .grade-good { background: #fef3c7; color: #92400e; }
         .grade-pass { background: #dbeafe; color: #1e40af; }
         .grade-fail { background: #fee2e2; color: #991b1b; }
+        
+        /* Language Switcher */
+        .lang-switch {
+            position: fixed; top: 16px; left: 16px; z-index: 100;
+            background: white; padding: 6px; border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; gap: 4px;
+            border: 2px solid #4F46E5;
+        }
+        [dir="ltr"] .lang-switch { left: auto; right: 16px; }
+        .lang-btn {
+            padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: bold;
+            transition: all 0.3s; border: none; font-size: 0.875rem;
+            background: transparent; color: #6b7280;
+        }
+        .lang-btn.active { background: #4F46E5; color: white; box-shadow: 0 2px 6px rgba(79,70,229,0.4); }
+        .lang-btn:hover:not(.active) { background: #eef2ff; color: #4F46E5; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 p-4 md:p-8 min-h-screen">
 
+    <!-- Language Switcher -->
+    <div class="lang-switch no-print">
+        <button class="lang-btn active" onclick="setLanguage('ar')" id="btn-ar">عربي</button>
+        <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+    </div>
+
     <!-- Timer -->
     <div id="timer-container" class="max-w-4xl mx-auto mb-4 text-center no-print">
         <div class="bg-white p-4 rounded-xl shadow-md inline-block border-2 border-indigo-100">
-            <span class="text-gray-600 ml-2">⏱️ Time Remaining:</span>
+            <span class="text-gray-600 ml-2" data-ar="⏱️ الوقت المتبقي:" data-en="⏱️ Time Remaining:">⏱️ الوقت المتبقي:</span>
             <span id="timer" class="text-2xl font-bold text-indigo-600 font-mono">60:00</span>
         </div>
     </div>
 
     <!-- Controls -->
     <div class="max-w-4xl mx-auto mb-6 flex flex-wrap gap-3 justify-center no-print">
-        <button onclick="toggleAnswers()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer">
-            ️ Show / Hide Model Answers
-        </button>
-        <button onclick="window.print()" class="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer">
-            🖨️ Print / Save as PDF
-        </button>
+        <button onclick="toggleAnswers()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer" data-ar="👁️ إظهار / إخفاء الإجابات" data-en="👁️ Show / Hide Answers">👁️ إظهار / إخفاء الإجابات</button>
+        <button onclick="window.print()" class="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer" data-ar="🖨️ طباعة / PDF" data-en="🖨️ Print / PDF">🖨️ طباعة / PDF</button>
     </div>
 
     <!-- Header -->
-    <header class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md mb-8 border-l-4 border-indigo-600">
+    <header class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md mb-8 border-r-4 border-indigo-600">
         <div class="text-center">
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2"> Grade 12 Advanced Physics</h1>
-            <h2 class="text-lg text-indigo-600 font-semibold">Unit 6.5: The Mathematics of Motion - Kinematics & Projectiles</h2>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2" data-ar="🚀 فيزياء الصف الثاني عشر متقدم" data-en="🚀 Grade 12 Advanced Physics">🚀 فيزياء الصف الثاني عشر متقدم</h1>
+            <h2 class="text-lg text-indigo-600 font-semibold" data-ar="الوحدة 6.5: رياضيات الحركة - الكينماتيكا والمقذوفات" data-en="Unit 6.5: The Mathematics of Motion - Kinematics & Projectiles">الوحدة 6.5: رياضيات الحركة - الكينماتيكا والمقذوفات</h2>
         </div>
         <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-            <span>📅 Date: <input type="text" class="border-b border-gray-400 bg-transparent w-28 text-center"></span>
-            <span>👤 Name: <input type="text" id="studentName" class="border-b border-gray-400 bg-transparent w-32 text-center" placeholder="Enter Name"></span>
-            <span>⏱️ Duration: 60 min</span>
-            <span>📊 Total: 100 Marks</span>
+            <span><span data-ar="📅 التاريخ:" data-en="📅 Date:">📅 التاريخ:</span> <input type="text" class="border-b border-gray-400 bg-transparent w-28 text-center"></span>
+            <span><span data-ar="👤 الاسم:" data-en="👤 Name:">👤 الاسم:</span> <input type="text" id="studentName" class="border-b border-gray-400 bg-transparent w-32 text-center" placeholder="Enter name"></span>
+            <span><span data-ar="⏱️ المدة: 60 دقيقة" data-en="⏱️ Duration: 60 min">⏱️ المدة: 60 دقيقة</span></span>
+            <span><span data-ar="📊 المجموع: 100 درجة" data-en="📊 Total: 100 Marks">📊 المجموع: 100 درجة</span></span>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto space-y-8">
-
-        <!-- Section 1: Fundamentals of Kinematics -->
-        <section class="bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-indigo-700"> Part 1: Fundamentals of Kinematics</h2>
-            <ol id="section1-list" class="space-y-4 text-sm">
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-1">
-                    <strong>1.</strong> What is kinematics described as in the context of the physical world?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="a" class="mr-2"> a) The study of chemical reactions in motion</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="b" class="mr-2"> b) The language we use to read the hidden code of physical motion</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="c" class="mr-2"> c) The calculation of financial markets</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="d" class="mr-2"> d) The biology of human muscles</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: b)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-2">
-                    <strong>2.</strong> Which three variables are mapped to predict the exact future of an object in motion?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="a" class="mr-2"> a) Position, velocity, and acceleration</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="b" class="mr-2"> b) Mass, weight, and friction</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="c" class="mr-2"> c) Temperature, pressure, and volume</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="d" class="mr-2"> d) Color, shape, and size</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: a)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-3">
-                    <strong>3.</strong> What are the three main trajectory types mentioned in the text?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="a" class="mr-2"> a) Circular, Elliptical, and Parabolic</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="b" class="mr-2"> b) Linear, Rotational, and Oscillatory</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="c" class="mr-2"> c) Vertical Freefall, Projectile Motion, and Linear Motion Vector</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="d" class="mr-2"> d) Horizontal, Diagonal, and Vertical</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: c)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-4">
-                    <strong>4.</strong> In pure vertical motion (like cliff diving), what is the sole dictator of the diver's movement?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="a" class="mr-2"> a) Air resistance</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="b" class="mr-2"> b) Gravity</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="c" class="mr-2"> c) Initial horizontal velocity</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="d" class="mr-2"> d) Wind speed</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: b)</div>
-                </li>
-            </ol>
-        </section>
-
-        <!-- Section 2: Case Study 1 - Cliff Diving -->
-        <section class="bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-indigo-700">🔹 Part 2: Case Study 1 - Cliff Diving</h2>
-            <ol id="section2-list" class="space-y-4 text-sm">
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-5">
-                    <strong>5.</strong> What is the initial velocity ($v_0$) of a cliff diver from the moment they step off the edge?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="a" class="mr-2"> a) Zero</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="b" class="mr-2"> b) 9.8 m/s</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="c" class="mr-2"> c) 19.6 m/s</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="d" class="mr-2"> d) Constant</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: a)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-6">
-                    <strong>6.</strong> How does the distance fallen grow over time due to the compounding effect of gravity?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="a" class="mr-2"> a) Linearly with time</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="b" class="mr-2"> b) Exponentially based on the square of time ($t^2$)</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="c" class="mr-2"> c) At a constant rate</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="d" class="mr-2"> d) Randomly</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: b)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-7">
-                    <strong>7.</strong> According to the Kinematic Profiles table, what is the critical variable for Cliff Diving?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="a" class="mr-2"> a) Impact Velocity</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="b" class="mr-2"> b) Launch Angle</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="c" class="mr-2"> c) Hang Time</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="d" class="mr-2"> d) Air Resistance</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: a)</div>
-                </li>
-            </ol>
-        </section>
-
-        <!-- Section 3: Case Study 2 - The Flying Zucchini -->
-        <section class="bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-indigo-700">🔹 Part 3: Case Study 2 - The Flying Zucchini</h2>
-            <ol id="section3-list" class="space-y-4 text-sm">
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-8">
-                    <strong>8.</strong> What two components must a human cannonball perfectly balance to safely reach the net?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="a" class="mr-2"> a) Weight and height</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="b" class="mr-2"> b) Launch power and launch angle</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="c" class="mr-2"> c) Wind speed and air pressure</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="d" class="mr-2"> d) Friction and gravity</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: b)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-9">
-                    <strong>9.</strong> What does the vertex of the parabola represent in projectile motion?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="a" class="mr-2"> a) The point of maximum horizontal distance</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="b" class="mr-2"> b) Maximum Height where vertical velocity = 0</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="c" class="mr-2"> c) The point of impact</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="d" class="mr-2"> d) The launch point</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: b)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-10">
-                    <strong>10.</strong> According to the Kinematic Profiles table, what is the critical variable for the Human Cannonball?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="a" class="mr-2"> a) Impact Velocity</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="b" class="mr-2"> b) Launch Angle ($\theta$)</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="c" class="mr-2"> c) Hang Time</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="d" class="mr-2"> d) Initial Mass</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: b)</div>
-                </li>
-            </ol>
-        </section>
-
-        <!-- Section 4: Case Studies 3 & 4 - Juggling & Skateboarding -->
-        <section class="bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-indigo-700">🔹 Part 4: Case Studies 3 & 4 - Juggling & Skateboarding</h2>
-            <ol id="section4-list" class="space-y-4 text-sm">
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-11">
-                    <strong>11.</strong> How is juggling described in the text?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="a" class="mr-2"> a) An exercise in synchronized kinematics</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="b" class="mr-2"> b) A random act of throwing</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="c" class="mr-2"> c) A study of aerodynamics</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="d" class="mr-2"> d) A test of physical strength</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: a)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-12">
-                    <strong>12.</strong> What is the physical limit of human timing for juggling airtime mentioned in the text?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="a" class="mr-2"> a) 1.0 second</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="b" class="mr-2"> b) 2.5 seconds</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="c" class="mr-2"> c) 5.0 seconds</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="d" class="mr-2"> d) 10.0 seconds</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: b)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-13">
-                    <strong>13.</strong> According to the Kinematic Profiles table, what is the critical variable for Juggling?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="a" class="mr-2"> a) Impact Velocity</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="b" class="mr-2"> b) Launch Angle</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="c" class="mr-2"> c) Hang Time (t)</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="d" class="mr-2"> d) Forward Velocity</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: c)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-14">
-                    <strong>14.</strong> When skateboarding stairs, the skater becomes a living projectile calculating vectors between forward velocity and what?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="a" class="mr-2"> a) Air resistance</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="b" class="mr-2"> b) Gravitational Acceleration</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="c" class="mr-2"> c) Friction coefficient</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="d" class="mr-2"> d) Wind speed</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: b)</div>
-                </li>
-            </ol>
-        </section>
-
-        <!-- Section 5: Real World Variables & Profiles -->
-        <section class="bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-indigo-700">🔹 Part 5: Real World Variables & Kinematic Profiles</h2>
-            <ol id="section5-list" class="space-y-4 text-sm">
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-15">
-                    <strong>15.</strong> Up until considering aerodynamics, our kinematic equations existed in a perfect what?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="a" class="mr-2"> a) Vacuum</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="b" class="mr-2"> b) Fluid</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="c" class="mr-2"> c) Atmosphere</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="d" class="mr-2"> d) Gravity field</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: a)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-16">
-                    <strong>16.</strong> How does drag (air resistance) alter the arc of a projectile?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="a" class="mr-2"> a) Lengthens the distance and flattens the descent</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="b" class="mr-2"> b) Shortens the distance and steepens the descent</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="c" class="mr-2"> c) Has no effect on the trajectory</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="d" class="mr-2"> d) Makes the trajectory perfectly circular</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: b)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-17">
-                    <strong>17.</strong> According to the Kinematic Profiles table, what is the trajectory shape for a Human Cannonball?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q17" value="a" class="mr-2"> a) 1D Linear Drop</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q17" value="b" class="mr-2"> b) 2D Asymmetric Parabola</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q17" value="c" class="mr-2"> c) Interlocking 2D Parabolas</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q17" value="d" class="mr-2"> d) Perfect Circle</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: b)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-18">
-                    <strong>18.</strong> According to the Kinematic Profiles table, what is the dominant force in Cliff Diving?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q18" value="a" class="mr-2"> a) Gravity (Vertical)</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q18" value="b" class="mr-2"> b) Gravity + Launch Power</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q18" value="c" class="mr-2"> c) Gravity + Rhythm</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q18" value="d" class="mr-2"> d) Air Resistance</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: a)</div>
-                </li>
-            </ol>
-        </section>
-
-        <!-- Section 6: The Ultimate Synthesis -->
-        <section class="bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-indigo-700">🔹 Part 6: The Ultimate Synthesis - The Calculus of Motion</h2>
-            <ol id="section6-list" class="space-y-4 text-sm">
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-19">
-                    <strong>19.</strong> In the calculus of motion, what does $v(t) = s'(t)$ represent?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q19" value="a" class="mr-2"> a) Acceleration is the derivative of velocity</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q19" value="b" class="mr-2"> b) Velocity is the derivative of position (How fast you are changing position)</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q19" value="c" class="mr-2"> c) Position is the derivative of velocity</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q19" value="d" class="mr-2"> d) Velocity is constant</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: b)</div>
-                </li>
-                <li class="border-l-4 border-indigo-500 pl-4 py-2" id="q-20">
-                    <strong>20.</strong> According to the text, what does mastering kinematic equations eliminate in extreme physical feats?<br>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q20" value="a" class="mr-2"> a) Guesswork (ensures survival through precision)</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q20" value="b" class="mr-2"> b) The need for gravity</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q20" value="c" class="mr-2"> c) Air resistance completely</label>
-                    <label class="ml-4 cursor-pointer block mt-1"><input type="radio" name="q20" value="d" class="mr-2"> d) The need for mathematical calculation</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ Answer: a)</div>
-                </li>
-            </ol>
-        </section>
-
-        <!-- Submit Button -->
-        <div class="text-center no-print pb-8">
-            <button onclick="gradeExam()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-lg px-10 py-4 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer">
-                📝 Submit & Auto-Grade Exam
-            </button>
-        </div>
+    <main class="max-w-4xl mx-auto space-y-8" id="exam-content">
+        <!-- Questions rendered by JS -->
     </main>
+
+    <!-- Submit Button -->
+    <div class="text-center no-print pb-8 mt-8">
+        <button onclick="gradeExam()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-lg px-10 py-4 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer" data-ar="📝 تسليم وتصحيح الامتحان" data-en="📝 Submit & Grade Exam">📝 تسليم وتصحيح الامتحان</button>
+    </div>
 
     <!-- Results Panel -->
     <div id="results-panel" class="max-w-4xl mx-auto mt-8 bg-white p-8 rounded-2xl shadow-2xl border-t-4 border-emerald-500 hidden no-print">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">📊 Exam Results</h2>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center" data-ar="📊 نتائج الامتحان" data-en="📊 Exam Results">📊 نتائج الامتحان</h2>
         <div class="grid md:grid-cols-3 gap-4 mb-6">
-            <div class="bg-blue-50 p-4 rounded-xl text-center"><p>Student Name</p><p id="res-name" class="font-bold text-xl text-indigo-700">-</p></div>
-            <div class="bg-purple-50 p-4 rounded-xl text-center"><p>Date</p><p id="res-date" class="font-bold text-xl text-purple-700">-</p></div>
-            <div class="bg-emerald-50 p-4 rounded-xl text-center"><p>Total Score</p><p id="res-total" class="font-bold text-3xl text-emerald-600">0 / 100</p></div>
+            <div class="bg-blue-50 p-4 rounded-xl text-center"><p data-ar="اسم الطالب" data-en="Student Name">اسم الطالب</p><p id="res-name" class="font-bold text-xl text-indigo-700">-</p></div>
+            <div class="bg-purple-50 p-4 rounded-xl text-center"><p data-ar="التاريخ" data-en="Date">التاريخ</p><p id="res-date" class="font-bold text-xl text-purple-700">-</p></div>
+            <div class="bg-emerald-50 p-4 rounded-xl text-center"><p data-ar="المجموع" data-en="Score">المجموع</p><p id="res-total" class="font-bold text-3xl text-emerald-600">0 / 100</p></div>
         </div>
 
-        <!-- Success Rate Badge -->
         <div class="text-center mb-6">
-            <span id="success-badge" class="success-badge grade-excellent">Excellent - 100%</span>
+            <span id="success-badge" class="success-badge grade-excellent">-</span>
             <p id="success-percent" class="text-4xl font-bold text-emerald-600 mt-2">100%</p>
-            <p class="text-sm text-gray-500">Success Rate</p>
+            <p class="text-sm text-gray-500" data-ar="نسبة النجاح" data-en="Success Rate">نسبة النجاح</p>
         </div>
 
-        <!-- Email Send Button -->
+        <div class="bg-gray-50 p-6 rounded-xl mb-6">
+            <h3 class="font-bold text-lg mb-4 text-gray-800" data-ar="📈 تفصيل الأداء حسب القسم:" data-en="📈 Performance Breakdown:">📈 تفصيل الأداء حسب القسم:</h3>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="أساسيات الكينماتيكا" data-en="Fundamentals of Kinematics">أساسيات الكينماتيكا</span>
+                    <span id="sec1-score" class="font-bold text-indigo-600">0/4</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="دراسة حالة 1: القفز من الجروف" data-en="Case Study 1: Cliff Diving">دراسة حالة 1: القفز من الجروف</span>
+                    <span id="sec2-score" class="font-bold text-indigo-600">0/3</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="دراسة حالة 2: الكوسة الطائرة" data-en="Case Study 2: The Flying Zucchini">دراسة حالة 2: الكوسة الطائرة</span>
+                    <span id="sec3-score" class="font-bold text-indigo-600">0/3</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="دراسة حالة 3 و 4: التزلج والسيرك" data-en="Case Studies 3 & 4: Juggling & Skateboarding">دراسة حالة 3 و 4: التزلج والسيرك</span>
+                    <span id="sec4-score" class="font-bold text-indigo-600">0/4</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="المتغيرات الحقيقية والملفات" data-en="Real World Variables & Profiles">المتغيرات الحقيقية والملفات</span>
+                    <span id="sec5-score" class="font-bold text-indigo-600">0/4</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="التركيب النهائي - حساب الحركة" data-en="The Ultimate Synthesis">التركيب النهائي - حساب الحركة</span>
+                    <span id="sec6-score" class="font-bold text-indigo-600">0/2</span>
+                </div>
+            </div>
+        </div>
+
         <div class="text-center mb-6">
-            <button id="sendEmailBtn" onclick="sendResultsToEmail()" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-lg px-8 py-3 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer">
-                📧 Send Results to Teacher
-            </button>
+            <button id="sendEmailBtn" onclick="sendResultsToEmail()" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-lg px-8 py-3 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer" data-ar="📧 إرسال النتائج للمعلم" data-en="📧 Send Results to Teacher">📧 إرسال النتائج للمعلم</button>
             <p id="emailStatus" class="text-sm mt-2 text-center font-medium"></p>
         </div>
 
         <div class="flex gap-3 justify-center">
-            <button onclick="window.print()" class="bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold">🖨️ Print Results</button>
+            <button onclick="window.print()" class="bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold" data-ar="🖨️ طباعة النتائج" data-en="🖨️ Print Results">🖨️ طباعة النتائج</button>
         </div>
     </div>
 
     <footer class="max-w-4xl mx-auto mt-10 mb-8 text-center text-gray-500 text-sm no-print">
-        © Grade 12 Advanced Physics | Unit 6.5: The Mathematics of Motion | Mr. Mohammed Hesham
+        © <span data-ar="الفيزياء للصف الثاني عشر متقدم | الوحدة 6.5: رياضيات الحركة" data-en="Grade 12 Advanced Physics | Unit 6.5: The Mathematics of Motion">الفيزياء للصف الثاني عشر متقدم | الوحدة 6.5: رياضيات الحركة</span> | Mr. Mohammed Hesham
     </footer>
 
-    <script>
-        // ============================================================
-        // ⚠️ STEP 1: EmailJS Configuration
-        // ============================================================
-        const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
-        const SERVICE_ID = "service_w15m64i";
-        const TEMPLATE_ID = "template_5b0u2tq";
-        const TARGET_EMAIL = "mohammedhesham872@gmail.com";
-        // ============================================================
-
-        (function(){ emailjs.init(PUBLIC_KEY); })();
-
-        // Timer functionality
-        let timeRemaining = 3600; // 60 minutes in seconds
-        let timerInterval;
-
-        function startTimer() {
-            document.getElementById('timer-container').style.display = 'block';
-            timerInterval = setInterval(() => {
-                timeRemaining--;
-                const minutes = Math.floor(timeRemaining / 60);
-                const seconds = timeRemaining % 60;
-                const timerEl = document.getElementById('timer');
-                timerEl.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-                
-                if (timeRemaining <= 300) {
-                    timerEl.classList.add('timer-warning');
+<script>
+// ==================== EXAM DATA (BILINGUAL - 20 QUESTIONS) ====================
+const examData = {
+    sections: [
+        {
+            id: 'sec1',
+            title: { ar: '🔹 الجزء الأول: أساسيات الكينماتيكا', en: '🔹 Part 1: Fundamentals of Kinematics' },
+            questions: [
+                {
+                    q: { ar: 'كيف تُوصف الكينماتيكا في سياق العالم الفيزيائي؟', en: 'What is kinematics described as in the context of the physical world?' },
+                    options: [
+                        { ar: 'دراسة التفاعلات الكيميائية في الحركة', en: 'The study of chemical reactions in motion' },
+                        { ar: 'اللغة التي نستخدمها لقراءة الشفرة الخفية للحركة الفيزيائية', en: 'The language we use to read the hidden code of physical motion' },
+                        { ar: 'حساب الأسواق المالية', en: 'The calculation of financial markets' },
+                        { ar: 'بيولوجيا عضلات الإنسان', en: 'The biology of human muscles' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'لغة قراءة الشفرة الخفية للحركة', en: 'Language to read the hidden code of motion' }
+                },
+                {
+                    q: { ar: 'ما هي المتغيرات الثلاثة التي تُرسم للتنبؤ بالمستقبل الدقيق لجسم متحرك؟', en: 'Which three variables are mapped to predict the exact future of an object in motion?' },
+                    options: [
+                        { ar: 'الموضع، السرعة، والتسارع', en: 'Position, velocity, and acceleration' },
+                        { ar: 'الكتلة، الوزن، والاحتكاك', en: 'Mass, weight, and friction' },
+                        { ar: 'درجة الحرارة، الضغط، والحجم', en: 'Temperature, pressure, and volume' },
+                        { ar: 'اللون، الشكل، والحجم', en: 'Color, shape, and size' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'الموضع، السرعة، والتسارع', en: 'Position, velocity, and acceleration' }
+                },
+                {
+                    q: { ar: 'ما هي أنواع المسارات الثلاثة الرئيسية المذكورة في النص؟', en: 'What are the three main trajectory types mentioned in the text?' },
+                    options: [
+                        { ar: 'دائرية، إهليلجية، وقطع مكافئ', en: 'Circular, Elliptical, and Parabolic' },
+                        { ar: 'خطية، دورانية، وتذبذبية', en: 'Linear, Rotational, and Oscillatory' },
+                        { ar: 'السقوط الحر العمودي، حركة المقذوفات، ومتجه الحركة الخطية', en: 'Vertical Freefall, Projectile Motion, and Linear Motion Vector' },
+                        { ar: 'أفقي، قطري، وعمودي', en: 'Horizontal, Diagonal, and Vertical' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'السقوط الحر العمودي، حركة المقذوفات، ومتجه الحركة الخطية', en: 'Vertical Freefall, Projectile Motion, Linear Motion Vector' }
+                },
+                {
+                    q: { ar: 'في الحركة العمودية البحتة (مثل القفز من الجروف)، ما هو العامل الوحيد المتحكم في حركة الغطاس؟', en: 'In pure vertical motion (like cliff diving), what is the sole dictator of the diver\'s movement?' },
+                    options: [
+                        { ar: 'مقاومة الهواء', en: 'Air resistance' },
+                        { ar: 'الجاذبية', en: 'Gravity' },
+                        { ar: 'السرعة الأفقية الابتدائية', en: 'Initial horizontal velocity' },
+                        { ar: 'سرعة الرياح', en: 'Wind speed' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'الجاذبية', en: 'Gravity' }
                 }
-                
-                if (timeRemaining <= 0) {
-                    clearInterval(timerInterval);
-                    alert("Time's up! Your exam will be submitted automatically.");
-                    gradeExam();
+            ]
+        },
+        {
+            id: 'sec2',
+            title: { ar: '🔹 الجزء الثاني: دراسة حالة 1 - القفز من الجروف', en: '🔹 Part 2: Case Study 1 - Cliff Diving' },
+            questions: [
+                {
+                    q: { ar: 'ما هي السرعة الابتدائية (v₀) للغطاس من لحظة خروجه من الحافة؟', en: 'What is the initial velocity (v₀) of a cliff diver from the moment they step off the edge?' },
+                    options: [
+                        { ar: 'صفر', en: 'Zero' },
+                        { ar: '9.8 م/ث', en: '9.8 m/s' },
+                        { ar: '19.6 م/ث', en: '19.6 m/s' },
+                        { ar: 'ثابتة', en: 'Constant' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'صفر', en: 'Zero' }
+                },
+                {
+                    q: { ar: 'كيف تنمو المسافة المقطوعة سقوطاً مع الزمن بسبب التأثير التراكمي للجاذبية؟', en: 'How does the distance fallen grow over time due to the compounding effect of gravity?' },
+                    options: [
+                        { ar: 'خطياً مع الزمن', en: 'Linearly with time' },
+                        { ar: 'أسيّاً بناءً على مربع الزمن (t²)', en: 'Exponentially based on the square of time (t²)' },
+                        { ar: 'بمعدل ثابت', en: 'At a constant rate' },
+                        { ar: 'عشوائياً', en: 'Randomly' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'أسيّاً بناءً على مربع الزمن', en: 'Exponentially based on t²' }
+                },
+                {
+                    q: { ar: 'وفقاً لجدول الملفات الكينماتيكية، ما هو المتغير الحاسم للقفز من الجروف؟', en: 'According to the Kinematic Profiles table, what is the critical variable for Cliff Diving?' },
+                    options: [
+                        { ar: 'سرعة التأثير', en: 'Impact Velocity' },
+                        { ar: 'زاوية الانطلاق', en: 'Launch Angle' },
+                        { ar: 'زمن التعليق', en: 'Hang Time' },
+                        { ar: 'مقاومة الهواء', en: 'Air Resistance' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'سرعة التأثير', en: 'Impact Velocity' }
                 }
-            }, 1000);
-        }
-
-        function toggleAnswers() {
-            document.querySelectorAll('.answer-box').forEach(el => el.classList.toggle('hidden'));
-        }
-
-        function gradeExam() {
-            let correctCount = 0;
-            const correctAnswers = [
-                'b','a','c','b',  // Q1-4
-                'a','b','a',      // Q5-7
-                'b','b','b',      // Q8-10
-                'a','b','c','b',  // Q11-14
-                'a','b','b','a',  // Q15-18
-                'b','a'           // Q19-20
-            ];
-
-            for(let i=1; i<=20; i++){
-                const selected = document.querySelector(`input[name="q${i}"]:checked`);
-                const li = document.getElementById(`q-${i}`);
-                const isCorrect = selected && selected.value === correctAnswers[i-1];
-                
-                if (isCorrect) {
-                    correctCount++;
-                    li.classList.add('correct');
-                    li.classList.remove('incorrect');
-                } else {
-                    li.classList.add('incorrect');
-                    li.classList.remove('correct');
+            ]
+        },
+        {
+            id: 'sec3',
+            title: { ar: '🔹 الجزء الثالث: دراسة حالة 2 - الكوسة الطائرة', en: '🔹 Part 3: Case Study 2 - The Flying Zucchini' },
+            questions: [
+                {
+                    q: { ar: 'ما المكونان اللذان يجب على الإنسان المدفعي موازنتهما تماماً للوصول بأمان إلى الشبكة؟', en: 'What two components must a human cannonball perfectly balance to safely reach the net?' },
+                    options: [
+                        { ar: 'الوزن والارتفاع', en: 'Weight and height' },
+                        { ar: 'قوة الانطلاق وزاوية الانطلاق', en: 'Launch power and launch angle' },
+                        { ar: 'سرعة الرياح والضغط الجوي', en: 'Wind speed and air pressure' },
+                        { ar: 'الاحتكاك والجاذبية', en: 'Friction and gravity' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'قوة الانطلاق وزاوية الانطلاق', en: 'Launch power and launch angle' }
+                },
+                {
+                    q: { ar: 'ماذا تمثل قمة القطع المكافئ في حركة المقذوفات؟', en: 'What does the vertex of the parabola represent in projectile motion?' },
+                    options: [
+                        { ar: 'نقطة أقصى مسافة أفقية', en: 'The point of maximum horizontal distance' },
+                        { ar: 'الارتفاع الأقصى حيث السرعة العمودية = 0', en: 'Maximum Height where vertical velocity = 0' },
+                        { ar: 'نقطة التأثير', en: 'The point of impact' },
+                        { ar: 'نقطة الانطلاق', en: 'The launch point' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'الارتفاع الأقصى حيث السرعة العمودية = 0', en: 'Max Height where vertical velocity = 0' }
+                },
+                {
+                    q: { ar: 'وفقاً لجدول الملفات الكينماتيكية، ما هو المتغير الحاسم للإنسان المدفعي؟', en: 'According to the Kinematic Profiles table, what is the critical variable for the Human Cannonball?' },
+                    options: [
+                        { ar: 'سرعة التأثير', en: 'Impact Velocity' },
+                        { ar: 'زاوية الانطلاق (θ)', en: 'Launch Angle (θ)' },
+                        { ar: 'زمن التعليق', en: 'Hang Time' },
+                        { ar: 'الكتلة الابتدائية', en: 'Initial Mass' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'زاوية الانطلاق (θ)', en: 'Launch Angle (θ)' }
                 }
-            }
-
-            const score = (correctCount / 20) * 100;
-            const successRate = Math.round(score);
-            
-            document.getElementById('res-total').textContent = `${Math.round(score)} / 100`;
-            document.getElementById('res-name').textContent = document.getElementById('studentName').value || 'Student';
-            document.getElementById('res-date').textContent = new Date().toLocaleDateString();
-            
-            // Update success badge
-            const badge = document.getElementById('success-badge');
-            const percent = document.getElementById('success-percent');
-            percent.textContent = `${successRate}%`;
-            
-            if(successRate >= 90) {
-                badge.textContent = 'Excellent';
-                badge.className = 'success-badge grade-excellent';
-            } else if(successRate >= 75) {
-                badge.textContent = 'Good';
-                badge.className = 'success-badge grade-good';
-            } else if(successRate >= 50) {
-                badge.textContent = 'Pass';
-                badge.className = 'success-badge grade-pass';
-            } else {
-                badge.textContent = 'Needs Improvement';
-                badge.className = 'success-badge grade-fail';
-            }
-            
-            document.getElementById('results-panel').classList.remove('hidden');
-            document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
-            
-            // Show email button after grading
-            document.getElementById('sendEmailBtn').classList.remove('hidden');
+            ]
+        },
+        {
+            id: 'sec4',
+            title: { ar: '🔹 الجزء الرابع: دراسة حالة 3 و 4 - التزلج والسيرك', en: '🔹 Part 4: Case Studies 3 & 4 - Juggling & Skateboarding' },
+            questions: [
+                {
+                    q: { ar: 'كيف يُوصف التلاعب بالكرات في النص؟', en: 'How is juggling described in the text?' },
+                    options: [
+                        { ar: 'تمرين في الكينماتيكا المتزامنة', en: 'An exercise in synchronized kinematics' },
+                        { ar: 'فعل عشوائي للرمي', en: 'A random act of throwing' },
+                        { ar: 'دراسة في الديناميكا الهوائية', en: 'A study of aerodynamics' },
+                        { ar: 'اختبار للقوة البدنية', en: 'A test of physical strength' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'تمرين في الكينماتيكا المتزامنة', en: 'Exercise in synchronized kinematics' }
+                },
+                {
+                    q: { ar: 'ما هو الحد الفيزيائي لتوقيت الإنسان لزمن الهواء في التلاعب بالكرات المذكور في النص؟', en: 'What is the physical limit of human timing for juggling airtime mentioned in the text?' },
+                    options: [
+                        { ar: '1.0 ثانية', en: '1.0 second' },
+                        { ar: '2.5 ثانية', en: '2.5 seconds' },
+                        { ar: '5.0 ثانية', en: '5.0 seconds' },
+                        { ar: '10.0 ثانية', en: '10.0 seconds' }
+                    ],
+                    correct: 1,
+                    answer: { ar: '2.5 ثانية', en: '2.5 seconds' }
+                },
+                {
+                    q: { ar: 'وفقاً لجدول الملفات الكينماتيكية، ما هو المتغير الحاسم للتلاعب بالكرات؟', en: 'According to the Kinematic Profiles table, what is the critical variable for Juggling?' },
+                    options: [
+                        { ar: 'سرعة التأثير', en: 'Impact Velocity' },
+                        { ar: 'زاوية الانطلاق', en: 'Launch Angle' },
+                        { ar: 'زمن التعليق (t)', en: 'Hang Time (t)' },
+                        { ar: 'السرعة الأمامية', en: 'Forward Velocity' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'زمن التعليق (t)', en: 'Hang Time (t)' }
+                },
+                {
+                    q: { ar: 'عند التزلج على الدرجات، يصبح المتزلج مقذوفاً حياً يحسب المتجهات بين السرعة الأمامية و ماذا؟', en: 'When skateboarding stairs, the skater becomes a living projectile calculating vectors between forward velocity and what?' },
+                    options: [
+                        { ar: 'مقاومة الهواء', en: 'Air resistance' },
+                        { ar: 'التسارع الجاذبي', en: 'Gravitational Acceleration' },
+                        { ar: 'معامل الاحتكاك', en: 'Friction coefficient' },
+                        { ar: 'سرعة الرياح', en: 'Wind speed' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'التسارع الجاذبي', en: 'Gravitational Acceleration' }
+                }
+            ]
+        },
+        {
+            id: 'sec5',
+            title: { ar: '🔹 الجزء الخامس: المتغيرات الحقيقية والملفات الكينماتيكية', en: '🔹 Part 5: Real World Variables & Kinematic Profiles' },
+            questions: [
+                {
+                    q: { ar: 'حتى قبل مراعاة الديناميكا الهوائية، كانت معادلاتنا الكينماتيكية موجودة في ماذا مثالي؟', en: 'Up until considering aerodynamics, our kinematic equations existed in a perfect what?' },
+                    options: [
+                        { ar: 'فراغ', en: 'Vacuum' },
+                        { ar: 'سائل', en: 'Fluid' },
+                        { ar: 'غلاف جوي', en: 'Atmosphere' },
+                        { ar: 'مجال جاذبية', en: 'Gravity field' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'فراغ', en: 'Vacuum' }
+                },
+                {
+                    q: { ar: 'كيف يغير السحب (مقاومة الهواء) من قوس المقذوف؟', en: 'How does drag (air resistance) alter the arc of a projectile?' },
+                    options: [
+                        { ar: 'يطيل المسافة وي flatt الهبوط', en: 'Lengthens the distance and flattens the descent' },
+                        { ar: 'يقصر المسافة ويجعل الهبوط أكثر انحداراً', en: 'Shortens the distance and steepens the descent' },
+                        { ar: 'لا يؤثر على المسار', en: 'Has no effect on the trajectory' },
+                        { ar: 'يجعل المسار دائرياً تماماً', en: 'Makes the trajectory perfectly circular' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'يقصر المسافة ويجعل الهبوط أكثر انحداراً', en: 'Shortens distance, steepens descent' }
+                },
+                {
+                    q: { ar: 'وفقاً لجدول الملفات الكينماتيكية، ما هو شكل المسار للإنسان المدفعي؟', en: 'According to the Kinematic Profiles table, what is the trajectory shape for a Human Cannonball?' },
+                    options: [
+                        { ar: 'سقوط خطي أحادي البعد', en: '1D Linear Drop' },
+                        { ar: 'قطع مكافئ غير متماثل ثنائي الأبعاد', en: '2D Asymmetric Parabola' },
+                        { ar: 'قطع مكافئ متداخل ثنائي الأبعاد', en: 'Interlocking 2D Parabolas' },
+                        { ar: 'دائرة مثالية', en: 'Perfect Circle' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'قطع مكافئ غير متماثل ثنائي الأبعاد', en: '2D Asymmetric Parabola' }
+                },
+                {
+                    q: { ar: 'وفقاً لجدول الملفات الكينماتيكية، ما هي القوة المهيمنة في القفز من الجروف؟', en: 'According to the Kinematic Profiles table, what is the dominant force in Cliff Diving?' },
+                    options: [
+                        { ar: 'الجاذبية (عمودية)', en: 'Gravity (Vertical)' },
+                        { ar: 'الجاذبية + قوة الانطلاق', en: 'Gravity + Launch Power' },
+                        { ar: 'الجاذبية + الإيقاع', en: 'Gravity + Rhythm' },
+                        { ar: 'مقاومة الهواء', en: 'Air Resistance' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'الجاذبية (عمودية)', en: 'Gravity (Vertical)' }
+                }
+            ]
+        },
+        {
+            id: 'sec6',
+            title: { ar: '🔹 الجزء السادس: التركيب النهائي - حساب الحركة', en: '🔹 Part 6: The Ultimate Synthesis - The Calculus of Motion' },
+            questions: [
+                {
+                    q: { ar: 'في حساب الحركة، ماذا يمثل v(t) = s\'(t)؟', en: 'In the calculus of motion, what does v(t) = s\'(t) represent?' },
+                    options: [
+                        { ar: 'التسارع هو مشتقة السرعة', en: 'Acceleration is the derivative of velocity' },
+                        { ar: 'السرعة هي مشتقة الموضع (مدى سرعة تغير موضعك)', en: 'Velocity is the derivative of position (How fast you are changing position)' },
+                        { ar: 'الموضع هو مشتقة السرعة', en: 'Position is the derivative of velocity' },
+                        { ar: 'السرعة ثابتة', en: 'Velocity is constant' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'السرعة هي مشتقة الموضع', en: 'Velocity is the derivative of position' }
+                },
+                {
+                    q: { ar: 'وفقاً للنص، ماذا يلغي إتقان المعادلات الكينماتيكية في الإنجازات الفيزيائية القصوى؟', en: 'According to the text, what does mastering kinematic equations eliminate in extreme physical feats?' },
+                    options: [
+                        { ar: 'التخمين (يضمن البقاء من خلال الدقة)', en: 'Guesswork (ensures survival through precision)' },
+                        { ar: 'الحاجة إلى الجاذبية', en: 'The need for gravity' },
+                        { ar: 'مقاومة الهواء تماماً', en: 'Air resistance completely' },
+                        { ar: 'الحاجة إلى الحساب الرياضي', en: 'The need for mathematical calculation' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'التخمين (يضمن البقاء من خلال الدقة)', en: 'Guesswork (ensures survival through precision)' }
+                }
+            ]
         }
+    ]
+};
 
-        function sendResultsToEmail() {
-            const btn = document.getElementById('sendEmailBtn');
-            const status = document.getElementById('emailStatus');
-            btn.disabled = true;
-            btn.textContent = '⏳ Sending...';
+// ==================== STATE ====================
+let currentLang = 'ar';
+let timeRemaining = 3600;
+let timerInterval;
 
-            const name = document.getElementById('studentName').value || 'N/A';
-            const date = document.querySelector('input[type="text"]').value || new Date().toLocaleDateString();
-            const score = document.getElementById('res-total').textContent;
-            const successRate = document.getElementById('success-percent').textContent;
+// ==================== LANGUAGE SWITCHER ====================
+function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    
+    document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    
+    document.body.classList.toggle('en-mode', lang === 'en');
+    
+    document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+        el.textContent = el.getAttribute(`data-${lang}`);
+    });
+    
+    renderExam();
+}
 
-            let answersHTML = `<table style="border:1px solid #e5e7eb; border-collapse:collapse; width:100%; font-family:'Inter', sans-serif; font-size:14px;">
-                <tr style="background:#4F46E5; color:white;"><th style="border:1px solid #e5e7eb; padding:8px;">Q#</th><th style="border:1px solid #e5e7eb; padding:8px;">Selected</th><th style="border:1px solid #e5e7eb; padding:8px;">Status</th></tr>`;
+// ==================== RENDER EXAM ====================
+function renderExam() {
+    const container = document.getElementById('exam-content');
+    const labels = {
+        ar: { option: ['أ', 'ب', 'ج', 'د'], answer: '✅ الإجابة:' },
+        en: { option: ['a', 'b', 'c', 'd'], answer: '✅ Answer:' }
+    };
+    const lbl = labels[currentLang];
+    const isRTL = currentLang === 'ar';
+    
+    let html = '';
+    let globalIdx = 0;
+    examData.sections.forEach((section, sIdx) => {
+        html += `
+        <section class="bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-xl font-bold mb-4 text-indigo-700">${section.title[currentLang]}</h2>
+            <ol id="section-${sIdx}-list" class="space-y-4 text-sm">`;
             
-            const correctAnswers = ['b','a','c','b','a','b','a','b','b','b','a','b','c','b','a','b','b','a','b','a'];
+        section.questions.forEach((q, qIdx) => {
+            const qNum = globalIdx + 1;
+            const borderSide = isRTL ? 'border-r-4 pr-4' : 'border-l-4 pl-4';
+            html += `
+                <li class="${borderSide} border-indigo-500 py-2" id="q-${qNum}">
+                    <strong>${qNum}.</strong> ${q.q[currentLang]}<br>`;
+                    
+            q.options.forEach((opt, oIdx) => {
+                const radioSide = isRTL ? 'mr-4 ml-2' : 'ml-4 mr-2';
+                const optLetter = String.fromCharCode(97 + oIdx);
+                html += `
+                    <label class="cursor-pointer block mt-1 ${isRTL ? 'mr-4' : 'ml-4'}">
+                        <input type="radio" name="q${qNum}" value="${optLetter}" class="${radioSide}"> 
+                        ${lbl.option[oIdx]}) ${opt[currentLang]}
+                    </label>`;
+            });
             
-            for(let i=1; i<=20; i++) {
-                const sel = document.querySelector(`input[name="q${i}"]:checked`);
-                const isCorrect = sel && sel.value === correctAnswers[i-1];
-                answersHTML += `<tr><td style="border:1px solid #e5e7eb; padding:6px;">${i}</td><td style="border:1px solid #e5e7eb; padding:6px;">${sel ? sel.value.toUpperCase() : '-'}</td><td style="border:1px solid #e5e7eb; padding:6px; color:${isCorrect ? 'green' : 'red'}">${isCorrect ? '✅ Correct' : ' Incorrect'}</td></tr>`;
-            }
-            answersHTML += '</table>';
+            html += `
+                    <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                        ${lbl.answer} ${lbl.option[q.correct]}) ${q.options[q.correct][currentLang]} — ${q.answer[currentLang]}
+                    </div>
+                </li>`;
+            globalIdx++;
+        });
+        
+        html += `
+            </ol>
+        </section>`;
+    });
+    
+    container.innerHTML = html;
+}
 
-            const templateParams = {
-                to_email: TARGET_EMAIL,
-                student_name: name,
-                exam_date: date,
-                total_score: score,
-                success_rate: successRate,
-                answers_table: answersHTML
-            };
-
-            emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
-                .then(() => {
-                    status.textContent = '✅ Sent successfully! Check your Gmail.';
-                    status.style.color = '#059669';
-                    btn.textContent = '✓ Sent';
-                })
-                .catch(err => {
-                    status.textContent = '❌ Failed. Check console or setup.';
-                    status.style.color = '#dc2626';
-                    btn.disabled = false;
-                    btn.textContent = '📧 Retry Send';
-                    console.error('EmailJS Error:', err);
-                });
+// ==================== TIMER ====================
+function startTimer() {
+    document.getElementById('timer-container').style.display = 'block';
+    timerInterval = setInterval(() => {
+        timeRemaining--;
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        const timerEl = document.getElementById('timer');
+        timerEl.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+        if (timeRemaining <= 300) timerEl.classList.add('timer-warning');
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            alert(currentLang === 'ar' ? "انتهى الوقت! سيتم تسليم الامتحان تلقائياً." : "Time's up! Exam will be submitted automatically.");
+            gradeExam();
         }
+    }, 1000);
+}
 
-        // Initialize timer on page load
-        window.addEventListener('DOMContentLoaded', startTimer);
-    </script>
+function toggleAnswers() {
+    document.querySelectorAll('.answer-box').forEach(el => el.classList.toggle('hidden'));
+}
+
+// ==================== GRADING ====================
+function gradeExam() {
+    let correctCount = 0;
+    const correctAnswersLetters = [
+        'b','a','c','b',  // Q1-4: Fundamentals
+        'a','b','a',      // Q5-7: Cliff Diving
+        'b','b','b',      // Q8-10: Flying Zucchini
+        'a','b','c','b',  // Q11-14: Juggling & Skateboarding
+        'a','b','b','a',  // Q15-18: Real World
+        'b','a'           // Q19-20: Synthesis
+    ];
+    
+    let sec1 = 0, sec2 = 0, sec3 = 0, sec4 = 0, sec5 = 0, sec6 = 0;
+    
+    for (let i = 1; i <= 20; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        const li = document.getElementById(`q-${i}`);
+        const isCorrect = selected && selected.value === correctAnswersLetters[i-1];
+        
+        if (isCorrect) {
+            correctCount++;
+            li.classList.add('correct');
+            li.classList.remove('incorrect');
+            if (i <= 4) sec1++;
+            else if (i <= 7) sec2++;
+            else if (i <= 10) sec3++;
+            else if (i <= 14) sec4++;
+            else if (i <= 18) sec5++;
+            else sec6++;
+        } else {
+            li.classList.add('incorrect');
+            li.classList.remove('correct');
+        }
+    }
+
+    const score = (correctCount / 20) * 100;
+    const successRate = Math.round(score);
+    
+    document.getElementById('res-total').textContent = `${Math.round(score)} / 100`;
+    document.getElementById('res-name').textContent = document.getElementById('studentName').value || (currentLang === 'ar' ? 'طالب' : 'Student');
+    document.getElementById('res-date').textContent = new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-AE' : 'en-US');
+    
+    document.getElementById('sec1-score').textContent = `${sec1}/4`;
+    document.getElementById('sec2-score').textContent = `${sec2}/3`;
+    document.getElementById('sec3-score').textContent = `${sec3}/3`;
+    document.getElementById('sec4-score').textContent = `${sec4}/4`;
+    document.getElementById('sec5-score').textContent = `${sec5}/4`;
+    document.getElementById('sec6-score').textContent = `${sec6}/2`;
+    
+    const badge = document.getElementById('success-badge');
+    const percent = document.getElementById('success-percent');
+    percent.textContent = `${successRate}%`;
+    
+    if (currentLang === 'ar') {
+        if (successRate >= 90) { badge.textContent = 'ممتاز'; badge.className = 'success-badge grade-excellent'; }
+        else if (successRate >= 75) { badge.textContent = 'جيد جداً'; badge.className = 'success-badge grade-good'; }
+        else if (successRate >= 50) { badge.textContent = 'جيد'; badge.className = 'success-badge grade-pass'; }
+        else { badge.textContent = 'يحتاج تحسين'; badge.className = 'success-badge grade-fail'; }
+    } else {
+        if (successRate >= 90) { badge.textContent = 'Excellent'; badge.className = 'success-badge grade-excellent'; }
+        else if (successRate >= 75) { badge.textContent = 'Very Good'; badge.className = 'success-badge grade-good'; }
+        else if (successRate >= 50) { badge.textContent = 'Good'; badge.className = 'success-badge grade-pass'; }
+        else { badge.textContent = 'Needs Improvement'; badge.className = 'success-badge grade-fail'; }
+    }
+    
+    document.getElementById('results-panel').classList.remove('hidden');
+    document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('sendEmailBtn').classList.remove('hidden');
+}
+
+// ==================== EMAIL ====================
+function sendResultsToEmail() {
+    const btn = document.getElementById('sendEmailBtn');
+    const status = document.getElementById('emailStatus');
+    btn.disabled = true;
+    btn.textContent = currentLang === 'ar' ? '⏳ جاري الإرسال...' : '⏳ Sending...';
+
+    const name = document.getElementById('studentName').value || 'N/A';
+    const date = document.querySelector('input[type="text"]').value || new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-AE' : 'en-US');
+    const score = document.getElementById('res-total').textContent;
+    const successRate = document.getElementById('success-percent').textContent;
+    const sec1 = document.getElementById('sec1-score').textContent;
+    const sec2 = document.getElementById('sec2-score').textContent;
+    const sec3 = document.getElementById('sec3-score').textContent;
+    const sec4 = document.getElementById('sec4-score').textContent;
+    const sec5 = document.getElementById('sec5-score').textContent;
+    const sec6 = document.getElementById('sec6-score').textContent;
+
+    const dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    const font = currentLang === 'ar' ? 'Cairo' : 'Inter';
+    
+    const sectionNames = {
+        ar: ['أساسيات الكينماتيكا', 'القفز من الجروف', 'الكوسة الطائرة', 'التزلج والسيرك', 'المتغيرات الحقيقية', 'التركيب النهائي'],
+        en: ['Kinematics Fundamentals', 'Cliff Diving', 'Flying Zucchini', 'Juggling & Skateboarding', 'Real World Variables', 'Ultimate Synthesis']
+    };
+    const sn = sectionNames[currentLang];
+
+    let answersHTML = `<div dir="${dir}" style="font-family: '${font}', sans-serif;">
+        <h3 style="color:#4F46E5;">📊 ${currentLang === 'ar' ? 'تفصيل الأداء - امتحان رياضيات الحركة (6.5)' : 'Performance Details - Mathematics of Motion Exam (6.5)'}:</h3>
+        <p><strong>${currentLang === 'ar' ? 'الطالب' : 'Student'}:</strong> ${name}</p>
+        <ul>
+            <li>${sn[0]}: ${sec1}</li>
+            <li>${sn[1]}: ${sec2}</li>
+            <li>${sn[2]}: ${sec3}</li>
+            <li>${sn[3]}: ${sec4}</li>
+            <li>${sn[4]}: ${sec5}</li>
+            <li>${sn[5]}: ${sec6}</li>
+        </ul>
+        <table style="border:1px solid #e5e7eb; border-collapse:collapse; width:100%; font-size:14px; direction: ${dir};">
+        <tr style="background:#4F46E5; color:white;"><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'السؤال' : 'Q#'}</th><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'الإجابة المختارة' : 'Selected'}</th><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'الحالة' : 'Status'}</th></tr>`;
+    
+    const correctAnswersLetters = ['b','a','c','b','a','b','a','b','b','b','a','b','c','b','a','b','b','a','b','a'];
+    
+    for (let i = 1; i <= 20; i++) {
+        const sel = document.querySelector(`input[name="q${i}"]:checked`);
+        const isCorrect = sel && sel.value === correctAnswersLetters[i-1];
+        answersHTML += `<tr><td style="border:1px solid #e5e7eb; padding:6px;">${i}</td><td style="border:1px solid #e5e7eb; padding:6px;">${sel ? sel.value.toUpperCase() : '-'}</td><td style="border:1px solid #e5e7eb; padding:6px; color:${isCorrect ? 'green' : 'red'}">${isCorrect ? '✅ ' + (currentLang === 'ar' ? 'صحيح' : 'Correct') : '❌ ' + (currentLang === 'ar' ? 'خطأ' : 'Wrong')}</td></tr>`;
+    }
+    answersHTML += '</table></div>';
+
+    const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
+    const SERVICE_ID = "service_w15m64i";
+    const TEMPLATE_ID = "template_5b0u2tq";
+    const TARGET_EMAIL = "mohammedhesham872@gmail.com";
+
+    emailjs.init(PUBLIC_KEY);
+    const templateParams = {
+        to_email: TARGET_EMAIL,
+        student_name: name,
+        exam_date: date,
+        total_score: score,
+        success_rate: successRate,
+        answers_table: answersHTML
+    };
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+        .then(() => {
+            status.textContent = currentLang === 'ar' ? '✅ تم الإرسال بنجاح! تحقق من Gmail.' : '✅ Sent successfully! Check Gmail.';
+            status.style.color = '#059669';
+            btn.textContent = currentLang === 'ar' ? '✓ تم الإرسال' : '✓ Sent';
+        })
+        .catch(err => {
+            status.textContent = currentLang === 'ar' ? '❌ فشل الإرسال. تحقق من الإعدادات.' : '❌ Failed to send. Check settings.';
+            status.style.color = '#dc2626';
+            btn.disabled = false;
+            btn.textContent = currentLang === 'ar' ? '📧 إعادة المحاولة' : '📧 Retry';
+            console.error('EmailJS Error:', err);
+        });
+}
+
+// Initialize
+window.addEventListener('DOMContentLoaded', () => {
+    renderExam();
+    startTimer();
+});
+</script>
 </body>
 </html>
